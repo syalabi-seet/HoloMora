@@ -1,35 +1,27 @@
-# HoloASR
+# HoloMora-ASR
 
 ## Introduction
 ```
+Implementing a mora-based speech-to-text model to Japanese YouTube streams for live-captioning.
 ```
 
 ## Framework
 ```
+Acoustic model -> Pronunciation/Lexicon model -> Language model
 ```
 
-#### Phonemes
+### Phonemes to Morae
 ```
-0 15000 xx
-15000 18840 sil
-18840 21240 a
-21240 22680 t
-22680 28920 o
-28920 33240 s
-33240 34680 a
+0 15000 xx                  0 15000 xx
+15000 18840 sil             15000 18840 sil
+18840 21240 a               18840 21240 a
+21240 22680 t               21240 28920 to
+22680 28920 o       -->     28920 34680 sa
+28920 33240 s               34680 39960 N
+33240 34680 a               39960 45720 ju
 34680 39960 N
 39960 42360 j
 42360 45720 u
-```
-#### Morae
-```
-0 15000 xx
-15000 18840 sil
-18840 21240 a
-21240 28920 to
-28920 34680 sa
-34680 39960 N
-39960 45720 ju
 ```
 
 ## References
@@ -42,5 +34,9 @@
 - https://nlp.stanford.edu/courses/lsa352/arpabet.html (ARPAbet)
 - https://arxiv.org/abs/2006.11477 (Wav2Vec 2.0)
 - https://ai.googleblog.com/2021/03/leaf-learnable-frontend-for-audio.html (LEAF)
-- 
+- https://arxiv.org/abs/2103.09903 (Transformer-ASR)
+- https://arxiv.org/abs/1508.01211 (LAS-ASR)
+- https://arxiv.org/abs/1609.06773 (Joint CTC-attention)
+- https://arxiv.org/abs/1910.13296 (On-the-fly data augmentation)
+- https://zerospeech.com/ (ZeroSpeech Datasets)
 ```
