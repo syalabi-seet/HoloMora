@@ -39,4 +39,7 @@ Acoustic model -> Pronunciation/Lexicon model -> Language model
 - https://arxiv.org/abs/1609.06773 (Joint CTC-attention)
 - https://arxiv.org/abs/1910.13296 (On-the-fly data augmentation)
 - https://zerospeech.com/ (ZeroSpeech Datasets)
+- https://arxiv.org/abs/2005.09409v2 (VQ-VAE)
+- https://arxiv.org/abs/1910.05453 (VQ-wav2vec)
+- https://isl.anthropomatik.kit.edu/pdf/Franke2016.pdf (DBLSTMs)
 ```
