@@ -8,6 +8,11 @@ Implementing a mora-based speech-to-text model to Japanese YouTube streams for l
 ## Framework
 ```
 Acoustic model -> Pronunciation/Lexicon model -> Language model
+1. Establish phoneme classification model.
+2. Obtain phoneme transcripts for japanese datasets. (labelling)
+3. Convert phonemes into morae.
+3. Build acoustic model (mora-based)
+4. 
 ```
 
 ### Phonemes to Morae
