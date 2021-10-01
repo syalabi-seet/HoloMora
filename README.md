@@ -13,7 +13,12 @@ Acoustic model -> Language model -> Fill-mask model -> Text-to-text model
 3. Convert phonemes into morae.
 3. Build acoustic model (mora-based)
 4. 
+
+- [x] Acoustic Model
+- [x] Item B
+- [x] Item C
 ```
+
 
 ### Phonemes to Morae
 ```
@@ -38,7 +43,7 @@ Common-Voice
 
 ## References
 ```
-- [TIMIT Dataset](https://deepai.org/dataset/timit)
+- [TIMIT Dataset - https://deepai.org/dataset/timit](#Link)
 - [JSUT Dataset](https://sites.google.com/site/shinnosuketakamichi/publication/jsut)
 - [JSUT Phonemic Segmented labels](https://github.com/r9y9/jsut-lab)
 - https://commonvoice.mozilla.org/en/datasets (Mozilla Common Voice Dataset)
@@ -52,4 +57,7 @@ Common-Voice
 - https://github.com/julius-speech/segmentation-kit (Julius Segmentation Kit)
 - https://opus.nlpl.eu/Tatoeba.php (Tatoeba JA-EN dataset)
 - https://wortschatz.uni-leipzig.de/en/download/Japanese 
+- https://opus.nlpl.eu/opus-100.php
+- https://github.com/kaiidams/Kokoro-Speech-Dataset
+- https://en.wikipedia.org/wiki/Romanization_of_Japanese
 ```
