@@ -22,11 +22,16 @@ While there have been unofficial attempts in fine-tuning Wav2Vec2 models on Hira
 
 As Romaji text are made up of characters from the English language, by utilizing the pre-trained embeddings of these English alphabets we could possibly fine-tune Wav2Vec2's base model on romaji words. The resulting model will work as an acoustic model that transcribes raw waveforms into romaji text.
 
-
-
 To transform the romaji text to the English language, another model will have to act as a language model that will transliterate the romaji text into English sentences.
 
+### 1.2 Performance results
+Acoustic model was trained for 15 epochs at batch size 4 with gradient accumulation of step 4.
+Phoneme Error Rate = 
+Word Error Rate = 
 
+BLEU score = 
+
+### 1.3 Application Screens
 
 
 ## 2. Setup
@@ -66,7 +71,11 @@ sentencepiece
 
 ## 3. References
 ### Papers
-- [Wav2Vec2.0](https://arxiv.org/abs/2006.11477)
+- [wav2vec 2.0: A Framework for Self-Supervised Learning of Speech Representations](https://arxiv.org/abs/2006.11477)
+- [Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer (T5)](https://arxiv.org/abs/1910.10683v3)
+- [JSUT corpus: free large-scale Japanese speech corpus for end-to-end speech synthesis](https://arxiv.org/abs/1711.00354)
+- [Common Voice: A Massively-Multilingual Speech Corpus](https://arxiv.org/abs/1912.06670)
+- [Improving Massively Multilingual Neural Machine Translation and Zero-Shot Translation](https://arxiv.org/abs/2004.11867)
 
 ### Model Weights
 - [Wav2Vec2-base](https://huggingface.co/facebook/wav2vec2-base)
@@ -74,10 +83,11 @@ sentencepiece
 
 ### Datasets
 - [JSUT](https://sites.google.com/site/shinnosuketakamichi/publication/jsut)
-- [Mozilla CommonVoice](https://commonvoice.mozilla.org/en/datasets)
-- [Kokoro/Librivox](https://github.com/kaiidams/Kokoro-Speech-Dataset)
+- [Mozilla Common Voice](https://commonvoice.mozilla.org/en/datasets)
+- [Kokoro-Librivox](https://github.com/kaiidams/Kokoro-Speech-Dataset)
 - [OPUS-100](https://opus.nlpl.eu/opus-100.php)
 - [Tatoeba](https://opus.nlpl.eu/Tatoeba.php)
 
 ### Misc.
-- [ARPAbet](https://nlp.stanford.edu/courses/lsa352/arpabet.html)
+- [ARPABET table](https://nlp.stanford.edu/courses/lsa352/arpabet.html)
+- [Kanji unicode table](http://www.rikai.com/library/kanjitables/kanji_codes.unicode.shtml)
