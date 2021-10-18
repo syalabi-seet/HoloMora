@@ -24,12 +24,16 @@ As Romaji text are made up of characters from the English language, by utilizing
 
 To transform the romaji text to the English language, another model will have to act as a language model that will transliterate the romaji text into English sentences.
 
-### 1.2 Performance results
-Acoustic model was trained for 15 epochs at batch size 4 with gradient accumulation of step 4.
-Phoneme Error Rate = 
-Word Error Rate = 
+### 1.2 Training Procedure
+Both models were trained using Cosine Decay with warm up phase learning rate schedule. They were also trained seperately and not end-to-end due to the large size of the models.
 
-BLEU score = 
+|Model|Pretrained Weights|Batch Size|Accumulation Steps|Epochs|Samples|Learning rate|Metrics|Training time|
+|-|-|-|-|-|-|-|-|-|
+|Acoustic|wav2vec2-base|4|4|15|40,000|5e-5|PER, WER|75 hours
+|Language|t5-base|16|2|10|1,200,000|5e-5|BLEU|100 hours
+
+### 1.3 Performance results
+
 
 ### 1.3 Application Screens
 
