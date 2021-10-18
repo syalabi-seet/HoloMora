@@ -30,7 +30,7 @@ To transform the romaji text to the English language, another model will have to
 
 
 ## 2. Setup
-### 2.1 System Config
+### 2.1 System Specification
 All model trainings were performed locally.
 ```
 CPU: AMD Ryzen 9 5950X
@@ -39,7 +39,7 @@ RAM: 32GB DDR4
 OS: Windows 10 Pro Build 21354
 ```
 
-### 2.2 Docker Environment
+### 2.2 Environment
 ```
 docker pull nvcr.io/nvidia/tensorrt:21.09-py3
 ```
@@ -65,19 +65,19 @@ sentencepiece
 ```
 
 ## 3. References
-```
-Papers
-- https://nlp.stanford.edu/courses/lsa352/arpabet.html (ARPAbet)
-- https://arxiv.org/abs/2006.11477 (Wav2Vec2.0)
+### Papers
+- [Wav2Vec2.0](https://arxiv.org/abs/2006.11477)
 
-Model Weights
-- Wav2Vec2-base (https://huggingface.co/facebook/wav2vec2-base)
-- T5-base (https://huggingface.co/t5-base)
+### Model Weights
+- [Wav2Vec2-base](https://huggingface.co/facebook/wav2vec2-base)
+- [T5-base](https://huggingface.co/t5-base)
 
-Datasets
-- JSUT (https://sites.google.com/site/shinnosuketakamichi/publication/jsut)
-- Mozilla CommonVoice (https://commonvoice.mozilla.org/en/datasets)
-- KOKORO/Librivox (https://github.com/kaiidams/Kokoro-Speech-Dataset)
-- OPUS-100 (https://opus.nlpl.eu/opus-100.php)
-- Tatoeba (https://opus.nlpl.eu/Tatoeba.php)
-```
+### Datasets
+- [JSUT](https://sites.google.com/site/shinnosuketakamichi/publication/jsut)
+- [Mozilla CommonVoice](https://commonvoice.mozilla.org/en/datasets)
+- [Kokoro/Librivox](https://github.com/kaiidams/Kokoro-Speech-Dataset)
+- [OPUS-100](https://opus.nlpl.eu/opus-100.php)
+- [Tatoeba](https://opus.nlpl.eu/Tatoeba.php)
+
+### Misc.
+- [ARPAbet](https://nlp.stanford.edu/courses/lsa352/arpabet.html)
