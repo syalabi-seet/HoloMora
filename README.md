@@ -20,32 +20,43 @@ Contrastive to other ASR models such as DeepSpeech2 which takes in spectral feat
 
 While there have been unofficial attempts in fine-tuning Wav2Vec2 models on Hiragana or Kanji data, there have not been publishings that document the success in developing Japanese ASR pipelines. Furthermore despite using deep architectures like Wav2Vec2-XLSR-large-53, the high dimensionality of character-based Japanese makes an End-to-End Japanese ASR model a suboptimal candidate. Therefore, a different approach has to be taken.
 
-As Romaji text are made up of characters from the English language, by utilizing the pre-trained embeddings of these English alphabets we could possibly fine-tune Wav2Vec2's base model on romaji words. The resulting model will work as an acoustic model that transcribes raw waveforms into romaji text.
+As romaji text is made up of characters from the English language, by utilizing the pre-trained embeddings of these English alphabets we could directly fine-tune Wav2Vec2's base model on romaji words. The resulting model would work as an acoustic model that transcribes raw waveforms into romaji text.
 
 To transform the romaji text to the English language, another model will have to act as a language model that will transliterate the romaji text into English sentences.
 
-### 1.2 Training Procedure
-Both models were trained using Cosine Decay with warm up phase learning rate schedule. They were also trained seperately and not end-to-end due to the large size of the models.
+There are existing extensively fine-tuned Japanese-to-English language models contributed on the HuggingFace platform but none of them takes in romaji text but instead accepts inputs that are either Kanji or Hiragana based text. It might be possible to convert romaji text into Kanji or Hiragana using a seperate model like Bi-LSTM to enable us to use their models, but it might incur additional conversion losses and also computation time.
 
-|Model|Pretrained Weights|Batch Size|Accumulation Steps|Epochs|Samples|Learning rate|Metrics|Training time|
+Hence, we decided to fine-tune our own language model to directly ingest romaji text into English text.
+
+### 1.2 Training Procedure
+- Both models were trained using Cosine annealing with a linear warm up phase learning rate schedule. 
+- They were also trained seperately and not end-to-end, to fit in memory.
+- Gradient accumulation was also employed to counter the small batch size, due to memory contraints.
+- Data was collated by sequence length to reduce padded length.
+
+![Diagram](schedule.png)
+
+|Model|Weights|Batch|Accum. Steps|Epochs|Samples|Learning rate|Metrics|Training time|
 |-|-|-|-|-|-|-|-|-|
-|Acoustic|wav2vec2-base|4|4|15|40,000|5e-5|PER, WER|75 hours
-|Language|t5-base|16|2|10|1,200,000|5e-5|BLEU|100 hours
+|Acoustic|[wav2vec2-base](https://huggingface.co/facebook/wav2vec2-base)|4|4|15|40,000|5e-5|PER, WER|75 hours
+|Language|[t5-base](https://huggingface.co/t5-base)|16|2|10|1,200,000|5e-5|BLEU|100 hours
 
 ### 1.3 Performance results
 
 
-### 1.3 Application Screens
+### 1.3 Demo screens
 
 
 ## 2. Setup
 ### 2.1 System Specification
 All model trainings were performed locally.
 ```
-CPU: AMD Ryzen 9 5950X
-GPU: RTX 3060 12GB VRAM
-RAM: 32GB DDR4
-OS: Windows 10 Pro Build 21354
+AMD Ryzen 9 5950X
+RTX 3060 12GB VRAM
+4x8GB DDR4 2133MHz
+Windows 10 Pro Build 21354
+NVIDIA Driver 496.13
+CUDA Toolkit 11.1
 ```
 
 ### 2.2 Environment
@@ -80,10 +91,6 @@ sentencepiece
 - [JSUT corpus: free large-scale Japanese speech corpus for end-to-end speech synthesis](https://arxiv.org/abs/1711.00354)
 - [Common Voice: A Massively-Multilingual Speech Corpus](https://arxiv.org/abs/1912.06670)
 - [Improving Massively Multilingual Neural Machine Translation and Zero-Shot Translation](https://arxiv.org/abs/2004.11867)
-
-### Model Weights
-- [Wav2Vec2-base](https://huggingface.co/facebook/wav2vec2-base)
-- [T5-base](https://huggingface.co/t5-base)
 
 ### Datasets
 - [JSUT](https://sites.google.com/site/shinnosuketakamichi/publication/jsut)
