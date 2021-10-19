@@ -6,7 +6,7 @@ In this project, we tested the feasibility of a mora-based Japanese-to-English a
 
 In recent years, multilingual models such as MBart, M2M100, MT5 and Wav2Vec2-XLSR have been released to tackle multilingual NLP tasks like machine translation. Albeit their success, these models tend to be computationally expensive as it learns multiple language embeddings. Unlike our case here, as we are only interested in Japanese to English transliterations, embeddings for other languages will not be important to us. As such, the baseline bilingual models of such architectures should be sufficient.
 
-Contrastive to other ASR models such as DeepSpeech2 which takes in spectral features like MFCC, Wav2Vec2 directly takes in raw waveforms as input without any further preprocessing, and generates readable romanized sentences without the use of a language model. This is advantageous because of higher data preservation for model training but in turn is exponentially more costly to train.
+Contrastive to other ASR models such as DeepSpeech2 which takes in spectral features like MFCC, Wav2Vec2 directly takes in raw waveforms as input without any further preprocessing, and generates readable romanized sentences without the use of a language model. This is advantageous because of higher data preservation for model training but in turn exponentially more costly to train.
 
 ### 1.1 Approach
 |Form|Cardinality|Text|
@@ -18,7 +18,7 @@ Contrastive to other ASR models such as DeepSpeech2 which takes in spectral feat
 
 ![Diagram](Diagram.png)
 
-While there have been unofficial attempts in fine-tuning Wav2Vec2 models on Hiragana or Kanji data, there have not been publishings that document the success in developing Japanese ASR pipelines. Furthermore despite using deep architectures like Wav2Vec2-XLSR-large-53, the high dimensionality of character-based Japanese makes an End-to-End Japanese ASR models a suboptimal candidate. Therefore, a different approach has to be taken.
+While there have been unofficial attempts in fine-tuning Wav2Vec2 models on Hiragana or Kanji data, there have not been publishings that document the success in developing Japanese ASR pipelines. Furthermore despite using deep architectures like Wav2Vec2-XLSR-large-53, the high cardinality of character-based Japanese makes End-to-End Japanese ASR models a suboptimal candidate. Therefore, a different approach has to be taken.
 
 As romaji text is made up of characters from the English language, by utilizing the pre-trained embeddings of these English alphabets we could directly fine-tune Wav2Vec2's base model on romaji words. The resulting model would work as an acoustic model that transcribes raw waveforms into romaji text.
 
@@ -29,17 +29,14 @@ There are existing extensively fine-tuned Japanese-to-English language models co
 Hence, we decided to fine-tune our own language model to directly ingest romaji text into English text.
 
 ### 1.2 Training Procedure
-- Both models were trained using Cosine annealing with a linear warm up phase learning rate schedule. 
-- They were also trained seperately and not end-to-end, to fit in memory.
-- Gradient accumulation was also employed to counter the small batch size, due to memory contraints.
-- Data was streamed via TFRecord file system and collated by sequence length to minimize padding.
+- Both models were trained seperately and not end-to-end, to fit in memory.
+- Gradient accumulation was employed to counter the small batch size, due to memory contraints.
+- Data was streamed using TFRecord file system and collated by sequence length to minimize padding.
 
-![Diagram](schedule.png)
-
-|Model|Weights|Batch|Accum. Steps|Epochs|Samples|Learning rate|Metrics|Training time|
-|-|-|-|-|-|-|-|-|-|
-|Acoustic|[wav2vec2-base](https://huggingface.co/facebook/wav2vec2-base)|4|4|14|40,000|5e-5|PER, WER|75 hours
-|Language|[t5-base](https://huggingface.co/t5-base)|16|2|10|1,200,000|5e-5|BLEU|100 hours
+|Model|Weights|Batch|Accum. Steps|Epochs|Samples|Metrics|Training time|
+|-|-|-|-|-|-|-|-|
+|Acoustic|[wav2vec2-base](https://huggingface.co/facebook/wav2vec2-base)|4|4|14|40,000|PER, WER|75 hours|
+|Language|[t5-base](https://huggingface.co/t5-base)|16|2|5|1,200,000|BLEU|125 hours|
 
 ### 1.3 Performance results
 
