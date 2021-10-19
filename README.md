@@ -32,7 +32,7 @@ Hence, we decided to fine-tune our own language model to directly ingest romaji 
 - Both models were trained using Cosine annealing with a linear warm up phase learning rate schedule. 
 - They were also trained seperately and not end-to-end, to fit in memory.
 - Gradient accumulation was also employed to counter the small batch size, due to memory contraints.
-- Data was collated by sequence length to reduce padded length.
+- Data was streamed via TFRecord file system and collated by sequence length to minimize padding.
 
 ![Diagram](schedule.png)
 
