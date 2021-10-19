@@ -18,7 +18,7 @@ Contrastive to other ASR models such as DeepSpeech2 which takes in spectral feat
 
 ![Diagram](Diagram.png)
 
-While there have been unofficial attempts in fine-tuning Wav2Vec2 models on Hiragana or Kanji data, there have not been publishings that document the success in developing Japanese ASR pipelines. Furthermore despite using deep architectures like Wav2Vec2-XLSR-large-53, the high dimensionality of character-based Japanese makes an End-to-End Japanese ASR model a suboptimal candidate. Therefore, a different approach has to be taken.
+While there have been unofficial attempts in fine-tuning Wav2Vec2 models on Hiragana or Kanji data, there have not been publishings that document the success in developing Japanese ASR pipelines. Furthermore despite using deep architectures like Wav2Vec2-XLSR-large-53, the high dimensionality of character-based Japanese makes an End-to-End Japanese ASR models a suboptimal candidate. Therefore, a different approach has to be taken.
 
 As romaji text is made up of characters from the English language, by utilizing the pre-trained embeddings of these English alphabets we could directly fine-tune Wav2Vec2's base model on romaji words. The resulting model would work as an acoustic model that transcribes raw waveforms into romaji text.
 
@@ -38,7 +38,7 @@ Hence, we decided to fine-tune our own language model to directly ingest romaji 
 
 |Model|Weights|Batch|Accum. Steps|Epochs|Samples|Learning rate|Metrics|Training time|
 |-|-|-|-|-|-|-|-|-|
-|Acoustic|[wav2vec2-base](https://huggingface.co/facebook/wav2vec2-base)|4|4|15|40,000|5e-5|PER, WER|75 hours
+|Acoustic|[wav2vec2-base](https://huggingface.co/facebook/wav2vec2-base)|4|4|14|40,000|5e-5|PER, WER|75 hours
 |Language|[t5-base](https://huggingface.co/t5-base)|16|2|10|1,200,000|5e-5|BLEU|100 hours
 
 ### 1.3 Performance results
