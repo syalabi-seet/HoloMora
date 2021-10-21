@@ -29,14 +29,16 @@ There are existing extensively fine-tuned Japanese-to-English language models co
 Hence, we decided to fine-tune our own language model to directly ingest romaji text into English text.
 
 ### 1.2 Training Procedure
-- Both models were trained seperately and not end-to-end, to fit in memory.
-- Gradient accumulation was employed to counter the small batch size, due to memory contraints.
-- Data was streamed using TFRecord file system and collated by sequence length to minimize padding.
+Due to memory constraints, these countermeasures had to be employed;
+- Both models were trained seperately and not end-to-end.
+- Gradient accumulation to counter the small batch size.
+- Data was collated by sequence length to minimize padding within batches.
+- Training loops were written in low-level Tensorflow to speed up computation.
 
-|Model|Weights|Batch|Accum. Steps|Epochs|Samples|Metrics|Training time|
+|Model|Weights|Batch size|Accum. teps|Epochs|Training samples|Metrics|Training time|
 |-|-|-|-|-|-|-|-|
 |Acoustic|[wav2vec2-base](https://huggingface.co/facebook/wav2vec2-base)|4|4|14|40,000|PER, WER|75 hours|
-|Language|[t5-base](https://huggingface.co/t5-base)|16|2|5|1,200,000|BLEU|125 hours|
+|Language|[t5-small](https://huggingface.co/t5-small)|32|1|5|1,200,000|BLEU|125 hours|
 
 ### 1.3 Performance results
 
@@ -70,6 +72,7 @@ tokenizers
 MeCab-python
 cutlet
 jiwer
+sacrebleu
 scikit-learn
 numpy
 pandas
