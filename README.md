@@ -37,8 +37,8 @@ Due to memory constraints, these countermeasures had to be employed;
 
 |Model|Weights|Batch size|Accum. teps|Epochs|Training samples|Metrics|Training time|
 |-|-|-|-|-|-|-|-|
-|Acoustic|[wav2vec2-base](https://huggingface.co/facebook/wav2vec2-base)|4|4|14|40,000|PER, WER|75 hours|
-|Language|[t5-small](https://huggingface.co/t5-small)|32|1|5|1,200,000|BLEU|125 hours|
+|Acoustic|[wav2vec2-base](https://huggingface.co/facebook/wav2vec2-base)|4|4|14|40,000|PER, WER|70 hours|
+|Language|[opus-mt-ja-en](https://huggingface.co/Helsinki-NLP/opus-mt-ja-en)|32|1|5|1,200,000|BLEU|125 hours|
 
 ### 1.3 Performance results
 
