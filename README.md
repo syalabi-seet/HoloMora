@@ -102,3 +102,4 @@ sentencepiece
 ### Misc.
 - [ARPABET table](https://nlp.stanford.edu/courses/lsa352/arpabet.html)
 - [Kanji unicode table](http://www.rikai.com/library/kanjitables/kanji_codes.unicode.shtml)
+- [VB-Audio](https://vb-audio.com/Cable/)
