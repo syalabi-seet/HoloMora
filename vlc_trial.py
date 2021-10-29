@@ -6,14 +6,18 @@ import queue
 import argparse
 import requests
 import pafy, vlc
+import librosa
 
 import sounddevice as sd
 
 from PyQt5.QtCore import (
     Qt, QTimer, QRunnable, pyqtSlot, QThreadPool)
+from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import (
     QMainWindow, QFrame, QWidget, QVBoxLayout, QApplication, QGridLayout,
-    QAction, QLineEdit, QLabel, )
+    QAction, QLineEdit, QLabel)
+
+os.environ["CUDA_VISIBLE_DEVICES"] = '0'
 
 ###############################################################################
 ## Arguments
@@ -22,7 +26,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--sample_rate', default=44100)
 parser.add_argument('--channels', default=[1,2])
 parser.add_argument('--resampling_rate', default=1)
-parser.add_argument('--interval', default=1)
+parser.add_argument('--interval', default=250)
+parser.add_argument('--buffer_size', default=20)
 
 parser.add_argument(
     '--input_device', dest='input_device', type=str,
@@ -57,36 +62,43 @@ class MainWindow(QMainWindow):
 
         # Set up audio stream ahead of time
         self.threadpool = QThreadPool()
-        self.q = queue.Queue()
+        self.q = queue.Queue(args.buffer_size)
         self.get_audiostream() 
 
         # Set main window box
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
-        self.layout = QVBoxLayout(self.central_widget)
+        self.layout = QGridLayout(self.central_widget)
         self.layout.setContentsMargins(0, 0, 0, 0)
+        self.layout.setVerticalSpacing(0)
 
         # Set media player
         self.player, resolution, title = self.get_mediaplayer()
         self.setWindowTitle(f"HoloMora Player | Now Playing ... {title}")
+        self.setWindowIcon(QIcon('icon.png'))
         self.setFixedSize(resolution[0], resolution[1])
         self.player.video_set_mouse_input(False)
         self.player.video_set_key_input(False)
 
-        worker = Worker(self.player.play)
+        worker = Worker(self.play_media)
         self.threadpool.start(worker)
 
         # Minimized Frame
         self.min_frame = QFrame()
-        self.min_frame.mouseDoubleClickEvent = self.FullScreen
-        self.set_window(self.min_frame)   
+        self.config_frame(self.min_frame)
+        self.text = QLabel(self.min_frame)
+        self.text.setAutoFillBackground(False)
+        self.text.setAlignment(Qt.AlignCenter)
+        self.text.setFont(QFont('Arial', 25))
+        self.text.setStyleSheet("background: black; color: white")
+        self.layout.addWidget(self.text, 49, 0, 1, 1)             
 
         # Main compute
-        self.buffer()     
-        self.show()
+        self.buffer()
+        self.show()     
 
-    def set_window(self, frame):
-        self.layout.addWidget(frame)        
+    def config_frame(self, frame):
+        self.layout.addWidget(frame, 0, 0, 50, 1)
         if sys.platform.startswith('linux'):
             self.player.set_xwindow(frame.winId())
         elif sys.platform == "win32":
@@ -99,7 +111,7 @@ class MainWindow(QMainWindow):
             def callback(indata, outdata, frames, time, status):
                 if status:
                     print(status)
-                self.q.put(indata[::self.args.resampling_rate])
+                self.q.put(indata)
                 outdata[:] = indata
 
             s = sd.Stream(
@@ -133,12 +145,24 @@ class MainWindow(QMainWindow):
         player.set_media(media)
         return player, resolution, stream.title
 
+    def play_media(self):
+        for i in range(3):
+            try:
+                self.player.play()
+            except:
+                print(f"Retrying...")
+                continue
+
     def compute(self):
         while True:
             try:
                 data = self.q.get_nowait()
             except queue.Empty:
                 break
+            data = data.reshape((2, -1))
+            data = librosa.to_mono(data)
+            data = librosa.resample(data, orig_sr=44100, target_sr=16000)
+            self.text.setText(str(data.shape))
     
     def buffer(self):
         self.timer = QTimer()
@@ -146,12 +170,15 @@ class MainWindow(QMainWindow):
         self.timer.timeout.connect(self.compute)
         self.timer.start()
 
-    def FullScreen(self, event):
+    def mouseDoubleClickEvent(self, event):
         if event.button() == Qt.LeftButton:
             if self.isFullScreen() == True:
                 self.showNormal()
             else:
                 self.showFullScreen()
+
+    def closeEvent(self, event):
+        sys.exit()
 
 ###############################################################################
 ## Input Logic
