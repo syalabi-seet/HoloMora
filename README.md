@@ -1,4 +1,4 @@
-# HoloMora-ASR
+# HoloMora
 Implementation of a speech-to-text model to Japanese YouTube streams for live-captioning.
 
 ## 1. Introduction

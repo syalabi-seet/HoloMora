@@ -51,6 +51,27 @@ class Worker(QRunnable):
         self.function(*self.args, **self.kwargs)
 
 ###############################################################################
+## Widgets
+###############################################################################
+class QFrameWidget(QFrame):
+    def __init__(self, player, parent=None):
+        super(QFrameWidget, self).__init__(parent)
+        if sys.platform.startswith('linux'):
+            player.set_xwindow(self.winId())
+        elif sys.platform == "win32":
+            player.set_hwnd(self.winId())
+        elif sys.platform == "darwin":
+            player.set_nsobject(int(self.win_Id()))
+
+class QLabelWidget(QLabel):
+    def __init__(self, parent):
+        super(QLabelWidget, self).__init__(parent)
+        self.setAutoFillBackground(False)
+        # self.setAlignment(Qt.AlignCenter)
+        self.setFont(QFont('Arial', 25))
+        self.setStyleSheet("background: black; color: white")
+
+###############################################################################
 ## Main Window
 ###############################################################################
 
@@ -84,27 +105,14 @@ class MainWindow(QMainWindow):
         self.threadpool.start(worker)
 
         # Minimized Frame
-        self.min_frame = QFrame()
-        self.config_frame(self.min_frame)
-        self.text = QLabel(self.min_frame)
-        self.text.setAutoFillBackground(False)
-        self.text.setAlignment(Qt.AlignCenter)
-        self.text.setFont(QFont('Arial', 25))
-        self.text.setStyleSheet("background: black; color: white")
-        self.layout.addWidget(self.text, 49, 0, 1, 1)             
+        self.video_frame = QFrameWidget(player=self.player, parent=self)
+        self.text = QLabelWidget(parent=self.video_frame)
+        self.layout.addWidget(self.video_frame, 0, 0, 50, 1) 
+        self.layout.addWidget(self.text, 49, 0, 1, 1)     
 
         # Main compute
         self.buffer()
-        self.show()     
-
-    def config_frame(self, frame):
-        self.layout.addWidget(frame, 0, 0, 50, 1)
-        if sys.platform.startswith('linux'):
-            self.player.set_xwindow(frame.winId())
-        elif sys.platform == "win32":
-            self.player.set_hwnd(frame.winId())
-        elif sys.platform == "darwin":
-            self.player.set_nsobject(int(frame.win_Id()))       
+        self.show()       
         
     def get_audiostream(self):
         def getAudio():
