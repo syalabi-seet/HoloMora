@@ -1,22 +1,11 @@
 # HoloMora
 
+In this project, we tested the feasibility of a mora-based, Japanese-to-English automatic speech recognition system.
+
+# 1. Approach
 ![Diagram](Diagram.png)
-
-## 1. Introduction
-In this project, we tested the feasibility of a mora-based Japanese-to-English automatic speech recognition system as opposed to End-to-end English-centric solutions.
-
-|Form|Cardinality|Text|
-|-|-|-|
-|Kanji|50,000+|やはり 向う 三 軒 りょう|
-|Hiragana|46|やはり むこう さん けん りよう|
-|Katakana|46|ヤハリ ムコウ サン ケン リョウ|
-|Romaji|26|Yahari mukou sanken ryou|
-|Proposed|33|y/a/h/a/r/i/m/u/k/o/u/s/a/n/k/e/n/ry/o/u|
-
-![Proposed](vocab_cloud.png)
-
-### 1.1 Training Procedure
-Due to memory constraints, these countermeasures had to be employed;
+## 1.1 Training Procedure
+Due to memory constraints, memory-efficient techniques had to be employed;
 - Models were trained seperately and not end-to-end.
 - Cosine decay with warm-up learning schedule was used for all models.
 - Data was collated by sequence length to minimize padding within batches.
@@ -30,7 +19,7 @@ Due to memory constraints, these countermeasures had to be employed;
 |Decoder|[bert-base-japanese-char-v2](https://huggingface.co/cl-tohoku/bert-base-japanese-char-v2)|64|15|3|5e-5|500,000|1:4|CER|10 hours|
 |Language|[opus-mt-ja-en](https://huggingface.co/Helsinki-NLP/opus-mt-ja-en)|xxx|xxx|xxx|5e-5|xxx|xxx|BLEU|xxx|
 
-### 1.2 Performance results
+## 1.2 Results
 
 ![AcousticModel]()
 
@@ -38,8 +27,8 @@ Due to memory constraints, these countermeasures had to be employed;
 
 ![LangaugeModel]()
 
-### 2. Demo screens
-PyQT5 and VLC MediaPlayer was utilized to built the user interface.
+# 2. Demo screens
+PyQT5 and VLC MediaPlayer were utilized to build the user interface.
 
 ![Demo_1]()
 
@@ -47,7 +36,7 @@ PyQT5 and VLC MediaPlayer was utilized to built the user interface.
 
 ![Demo_3]()
 
-## 3. Setup
+# 3. Setup
 ### 3.1 System Specification
 All model trainings were performed locally.
 ```
@@ -84,7 +73,7 @@ soundfile
 
 ```
 
-## 4. References
+# 4. References
 ### Papers
 - [wav2vec 2.0: A Framework for Self-Supervised Learning of Speech Representations](https://arxiv.org/abs/2006.11477)
 - [Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer (T5)](https://arxiv.org/abs/1910.10683v3)
