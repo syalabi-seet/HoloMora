@@ -1,7 +1,6 @@
 import os
 import re
 import sys
-import time
 import queue
 import argparse
 import requests
@@ -14,10 +13,9 @@ from PyQt5.QtCore import (
     Qt, QTimer, QRunnable, pyqtSlot, QThreadPool)
 from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import (
-    QMainWindow, QFrame, QWidget, QVBoxLayout, QApplication, QGridLayout,
-    QAction, QLineEdit, QLabel)
+    QMainWindow, QFrame, QWidget,  QApplication, QGridLayout, QLabel)
 
-os.environ["CUDA_VISIBLE_DEVICES"] = '0'
+# os.environ["CUDA_VISIBLE_DEVICES"] = '1'
 
 ###############################################################################
 ## Arguments
@@ -31,10 +29,10 @@ parser.add_argument('--buffer_size', default=20)
 
 parser.add_argument(
     '--input_device', dest='input_device', type=str,
-    default='Virtual Input (VB-Audio Virtual Cable), Windows DirectSound')
+    default='Cable Output (VB-Audio Virtual Cable), Windows DirectSound')
 parser.add_argument(
     '--output_device', dest='output_device', type=str,
-    default='Speakers (High Definition Audio Device), Windows DirectSound')
+    default='Speakers (Realtek(R) Audio), Windows DirectSound')
 
 ###############################################################################
 ## Threading
@@ -67,7 +65,6 @@ class QLabelWidget(QLabel):
     def __init__(self, parent):
         super(QLabelWidget, self).__init__(parent)
         self.setAutoFillBackground(False)
-        # self.setAlignment(Qt.AlignCenter)
         self.setFont(QFont('Arial', 25))
         self.setStyleSheet("background: black; color: white")
 
@@ -81,10 +78,8 @@ class MainWindow(QMainWindow):
         self.args = args
         self.media_url = media_url
 
-        # Set up audio stream ahead of time
         self.threadpool = QThreadPool()
         self.q = queue.Queue(args.buffer_size)
-        self.get_audiostream() 
 
         # Set main window box
         self.central_widget = QWidget()
@@ -94,7 +89,8 @@ class MainWindow(QMainWindow):
         self.layout.setVerticalSpacing(0)
 
         # Set media player
-        self.player, resolution, title = self.get_mediaplayer()
+        self.player, resolution, title = self.get_mediaplayer()   
+        self.get_audiostream()
         self.setWindowTitle(f"HoloMora Player | Now Playing ... {title}")
         self.setWindowIcon(QIcon('icon.png'))
         self.setFixedSize(resolution[0], resolution[1])
@@ -127,7 +123,7 @@ class MainWindow(QMainWindow):
                 samplerate=self.args.sample_rate,
                 channels=max(self.args.channels),
                 callback=callback)
-            
+
             with s:
                 while True:
                     sd.sleep(-1)
@@ -181,12 +177,24 @@ class MainWindow(QMainWindow):
     def mouseDoubleClickEvent(self, event):
         if event.button() == Qt.LeftButton:
             if self.isFullScreen() == True:
+                print("Minimizing window.")
                 self.showNormal()
             else:
+                print("Maximizing window.")
                 self.showFullScreen()
 
-    def closeEvent(self, event):
-        sys.exit()
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key_Space:
+            if self.player.is_playing() == 1:
+                print("Video paused.")
+                self.player.pause()
+            else:
+                print("Video resumed.")
+                self.player.play()
+        elif event.key() == Qt.Key_Escape:
+            self.player.stop()
+            self.close()
+        return super().keyPressEvent(event)
 
 ###############################################################################
 ## Input Logic
