@@ -1,11 +1,12 @@
 import os
-import re
+import regex as re
 import sys
 import queue
 import argparse
 import requests
 import pafy, vlc
 import librosa
+from loguru import logger
 
 import sounddevice as sd
 
@@ -65,6 +66,7 @@ class QLabelWidget(QLabel):
     def __init__(self, parent):
         super(QLabelWidget, self).__init__(parent)
         self.setAutoFillBackground(False)
+        self.setAlignment(Qt.AlignCenter)
         self.setFont(QFont('Arial', 25))
         self.setStyleSheet("background: black; color: white")
 
@@ -92,7 +94,7 @@ class MainWindow(QMainWindow):
         self.player, resolution, title = self.get_mediaplayer()   
         self.get_audiostream()
         self.setWindowTitle(f"HoloMora Player | Now Playing ... {title}")
-        self.setWindowIcon(QIcon('icon.png'))
+        self.setWindowIcon(QIcon('figures\icon.png'))
         self.setFixedSize(resolution[0], resolution[1])
         self.player.video_set_mouse_input(False)
         self.player.video_set_key_input(False)
@@ -139,7 +141,7 @@ class MainWindow(QMainWindow):
                 stream = media_object.getbest()
                 break
             except:
-                print(f"Retrying...")
+                logger.info("Retrying...")
                 continue
         
         resolution = [int(x) for x in stream.resolution.split("x")]
@@ -154,7 +156,7 @@ class MainWindow(QMainWindow):
             try:
                 self.player.play()
             except:
-                print(f"Retrying...")
+                logger.info("Retrying...")
                 continue
 
     def compute(self):
@@ -166,7 +168,7 @@ class MainWindow(QMainWindow):
             data = data.reshape((2, -1))
             data = librosa.to_mono(data)
             data = librosa.resample(data, orig_sr=44100, target_sr=16000)
-            self.text.setText(str(data.shape))
+            self.text.setText(str(data.mean()))
     
     def buffer(self):
         self.timer = QTimer()
@@ -177,23 +179,24 @@ class MainWindow(QMainWindow):
     def mouseDoubleClickEvent(self, event):
         if event.button() == Qt.LeftButton:
             if self.isFullScreen() == True:
-                print("Minimizing window.")
+                logger.info("Minimizing window.")
                 self.showNormal()
             else:
-                print("Maximizing window.")
+                logger.info("Maximizing window.")
                 self.showFullScreen()
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Space:
             if self.player.is_playing() == 1:
-                print("Video paused.")
+                logger.info("Video paused.")
                 self.player.pause()
             else:
-                print("Video resumed.")
+                logger.info("Video resumed.")
                 self.player.play()
         elif event.key() == Qt.Key_Escape:
             self.player.stop()
             self.close()
+            logger.info("Exiting player.")
         return super().keyPressEvent(event)
 
 ###############################################################################
@@ -206,17 +209,17 @@ def get_input():
         media_url = input("URL: ")
         if media_url.lower() != "quit":
             if not media_url.startswith(url_prefix):
-                print(f"Invalid URL, URLs must begin with {url_prefix}.")
+                logger.info(f"Invalid URL, URLs must begin with {url_prefix}.")
                 continue
             request = requests.get(media_url).text
             match = re.findall("Video unavailable", request)
             if match != []:
-                print("Invalid URL, please try again.")
+                logger.info("Invalid URL, please try again.")
                 continue
             else:
                 break
         else:
-            print("Exiting...")
+            logger.info("Exiting...")
             sys.exit()
     return media_url
 

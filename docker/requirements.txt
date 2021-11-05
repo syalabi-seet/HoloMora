@@ -1,0 +1,8 @@
+requests
+pafy
+python-vlc
+librosa
+loguru
+sounddevice
+pyqt5
+regex
