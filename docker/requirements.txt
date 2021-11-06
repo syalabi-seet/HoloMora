@@ -1,3 +1,4 @@
+tensorflow
 requests
 pafy
 python-vlc

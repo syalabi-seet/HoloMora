@@ -15,8 +15,8 @@ Due to memory constraints, memory-efficient techniques had to be employed;
 
 |Model|Pretrained weights|Batch size|Epochs|Warm-up epochs|Learning rate|Training samples|Test split|Metrics|Training time|
 |-|-|-|-|-|-|-|-|-|-|
-|Acoustic|[wav2vec2-base](https://huggingface.co/facebook/wav2vec2-base)|4|20|5|5e-5|50,000|1:10|PER|80 hours|
-|Decoder|[bert-base-japanese-char-v2](https://huggingface.co/cl-tohoku/bert-base-japanese-char-v2)|32|30|3|5e-5|500,000|1:5|CER|30 hours|
+|Acoustic|[wav2vec2-base](https://huggingface.co/facebook/wav2vec2-base)|4|15|3|5e-5|40,000|1:10|PER|30 hours|
+|Decoder|[bert-base-japanese-char-v2](https://huggingface.co/cl-tohoku/bert-base-japanese-char-v2)|32|15|3|5e-5|500,000|1:5|CER|15 hours|
 |Language|[opus-mt-ja-en](https://huggingface.co/Helsinki-NLP/opus-mt-ja-en)|xxx|xxx|xxx|5e-5|xxx|xxx|BLEU|xxx|
 
 ## 1.2 Performance
@@ -60,13 +60,14 @@ docker pull xxx
 #### requirements.txt
 ```
 tensorflow
+requests
+pafy
+python-vlc
 librosa
-transformers
-MeCab-python
-cutlet
+loguru
 sounddevice
 pyqt5
-python-vlc
+regex
 ```
 #### Dockerfile
 ```
@@ -92,3 +93,4 @@ nvcr.io/nvidia/tensorrt:21.09-py3
 - [ARPABET table](https://nlp.stanford.edu/courses/lsa352/arpabet.html)
 - [Kanji unicode table](http://www.rikai.com/library/kanjitables/kanji_codes.unicode.shtml)
 - [VB-Audio](https://vb-audio.com/Cable/)
+- [Double Vowels](https://ocw.mit.edu/resources/res-21g-01-kana-spring-2010/hiragana/hiragana-double-vowels-and-double-consonants/)
