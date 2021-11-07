@@ -15,8 +15,8 @@ Due to memory constraints, memory-efficient techniques had to be employed;
 
 |Model|Pretrained weights|Batch size|Epochs|Warm-up epochs|Learning rate|Training samples|Test split|Metrics|Training time|
 |-|-|-|-|-|-|-|-|-|-|
-|Acoustic|[wav2vec2-base](https://huggingface.co/facebook/wav2vec2-base)|4|15|3|5e-5|40,000|1:10|PER|30 hours|
-|Decoder|[bert-base-japanese-char-v2](https://huggingface.co/cl-tohoku/bert-base-japanese-char-v2)|32|15|3|5e-5|500,000|1:5|CER|15 hours|
+|Acoustic|[wav2vec2-base](https://huggingface.co/facebook/wav2vec2-base)|4|15|3|5e-5|50,000|1:10|PER, CER|70 hours|
+|Decoder|[bert-base-japanese-char-v2](https://huggingface.co/cl-tohoku/bert-base-japanese-char-v2)|64|15|3|5e-5|1,000,000|1:10|CER|15 hours|
 |Language|[opus-mt-ja-en](https://huggingface.co/Helsinki-NLP/opus-mt-ja-en)|xxx|xxx|xxx|5e-5|xxx|xxx|BLEU|xxx|
 
 ## 1.2 Performance

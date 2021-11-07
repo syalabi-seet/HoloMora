@@ -1,4 +1,4 @@
-tensorflow
+tensorflow==2.5.0
 requests
 pafy
 python-vlc
@@ -7,3 +7,4 @@ loguru
 sounddevice
 pyqt5
 regex
+youtube-dl

@@ -16,7 +16,7 @@ from PyQt5.QtGui import QIcon, QFont
 from PyQt5.QtWidgets import (
     QMainWindow, QFrame, QWidget,  QApplication, QGridLayout, QLabel)
 
-# os.environ["CUDA_VISIBLE_DEVICES"] = '1'
+os.environ["CUDA_VISIBLE_DEVICES"] = '1'
 
 ###############################################################################
 ## Arguments
@@ -27,6 +27,7 @@ parser.add_argument('--channels', default=[1,2])
 parser.add_argument('--resampling_rate', default=1)
 parser.add_argument('--interval', default=250)
 parser.add_argument('--buffer_size', default=20)
+parser.add_argument('--media_url', dest='media_url', type=str)
 
 parser.add_argument(
     '--input_device', dest='input_device', type=str,
@@ -152,7 +153,7 @@ class MainWindow(QMainWindow):
         return player, resolution, stream.title
 
     def play_media(self):
-        for i in range(3):
+        for _ in range(3):
             try:
                 self.player.play()
             except:
@@ -227,9 +228,11 @@ def get_input():
 ## Boilerplate
 ###############################################################################
 if __name__ == '__main__':
-    media_url = get_input()    
+    args = parser.parse_known_args()[0]
+    # media_url = get_input()    
+    media_url = args.media_url
     app = QApplication(sys.argv)
     main = MainWindow(
         media_url=media_url, 
-        args=parser.parse_known_args()[0])
+        args=args)
     sys.exit(app.exec_())
