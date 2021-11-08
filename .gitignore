@@ -1,6 +1,5 @@
 */
 !figures/
-!docker/
 ffmpeg.exe
 geckodriver.exe
 geckodriver.log

@@ -31,50 +31,26 @@ Due to memory constraints, memory-efficient techniques had to be employed;
 
 ![LangaugeModel]()
 
-# 2. Demo screens
+# 2. Setup (Windows only)
 PyQT5 and VLC MediaPlayer were utilized to build the user interface.
 
-![Demo_1]()
+1. Install VLC Mediaplayer from https://www.videolan.org/
 
-![Demo_2]()
+2. Download HoloMora Installer
 
-![Demo_3]()
+3. Run HoloMora.exe
 
-# 3. Setup
-### 3.1 System Specification
-All model trainings were performed locally.
-```
-AMD Ryzen 5 3600XT
-RTX 3060 12GB VRAM
-4x8GB DDR4 2133MHz
-Windows 11 Pro Build 22000.258
-NVIDIA Driver 496.49
-CUDA Toolkit 11.4
-CuDNN 8.4
-```
+![Icon](figures\icon_snip.png)
 
-### 3.2 Environment
-```
-docker pull xxx
-```
-#### requirements.txt
-```
-tensorflow
-requests
-pafy
-python-vlc
-librosa
-loguru
-sounddevice
-pyqt5
-regex
-```
-#### Dockerfile
-```
-nvcr.io/nvidia/tensorrt:21.09-py3
-```
+4. Input a valid YouTube link
 
-# 4. References
+![Run](figures\run_exe.png)
+
+5. Subtitles will appear at the bottom of the screen automatically
+
+6. Press ESC and close command prompt to exit program
+
+# 3. References
 ### Papers
 - [wav2vec 2.0: A Framework for Self-Supervised Learning of Speech Representations](https://arxiv.org/abs/2006.11477)
 - [Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer (T5)](https://arxiv.org/abs/1910.10683v3)
@@ -92,5 +68,4 @@ nvcr.io/nvidia/tensorrt:21.09-py3
 ### Misc.
 - [ARPABET table](https://nlp.stanford.edu/courses/lsa352/arpabet.html)
 - [Kanji unicode table](http://www.rikai.com/library/kanjitables/kanji_codes.unicode.shtml)
-- [VB-Audio](https://vb-audio.com/Cable/)
 - [Double Vowels](https://ocw.mit.edu/resources/res-21g-01-kana-spring-2010/hiragana/hiragana-double-vowels-and-double-consonants/)

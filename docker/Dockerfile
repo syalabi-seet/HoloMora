@@ -8,7 +8,14 @@ RUN apt-get update && \
     ffmpeg \
     libsm6 \
     libxext6 \
-    xcb
+    xcb \
+    libxcb.*-dev \ 
+    libx11-xcb-dev \
+    libglu1-mesa-dev \
+    libxrender-dev \
+    libxi-dev \
+    libxkbcommon-dev \
+    libxkbcommon-x11-dev
 
 COPY requirements.txt requirements.txt
 
