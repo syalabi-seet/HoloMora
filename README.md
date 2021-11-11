@@ -1,6 +1,7 @@
 # HoloMora
 
 In this project, we tested the feasibility of a mora-based, Japanese-to-English automatic speech recognition system.
+Due to time-constraints, the language model was left in its pre-trained weights. 
 
 # 1. Approach
 ![Diagram](figures\Diagram.png)
@@ -15,40 +16,65 @@ Due to memory constraints, memory-efficient techniques had to be employed;
 
 |Model|Pretrained weights|Batch size|Epochs|Warm-up epochs|Learning rate|Training samples|Test split|Metrics|Training time|
 |-|-|-|-|-|-|-|-|-|-|
-|Acoustic|[wav2vec2-base](https://huggingface.co/facebook/wav2vec2-base)|4|15|3|5e-5|50,000|1:10|PER, CER|70 hours|
-|Decoder|[bert-base-japanese-char-v2](https://huggingface.co/cl-tohoku/bert-base-japanese-char-v2)|64|15|3|5e-5|1,000,000|1:10|CER|15 hours|
-|Language|[opus-mt-ja-en](https://huggingface.co/Helsinki-NLP/opus-mt-ja-en)|xxx|xxx|xxx|5e-5|xxx|xxx|BLEU|xxx|
+|Acoustic|[wav2vec2-base](https://huggingface.co/facebook/wav2vec2-base)|4|15|3|5e-5|50,000|1:10|PER,CER|70 hours|
+|Decoder|[bert-base-japanese-char-v2](https://huggingface.co/cl-tohoku/bert-base-japanese-char-v2)|64|25|3|5e-5|1,000,000|1:10|CER|30 hours|
+|Language|[opus-mt-ja-en](https://huggingface.co/Helsinki-NLP/opus-mt-ja-en)|-|-|-|-|-|-|BLEU|-|
 
 ## 1.2 Performance
-### Accuracy
+![Acoustic](Figures\acoustic_model_plot.png)
+![Decoder](Figures\decoder_model_plot.png)
+|Model|Metrics|Validation score|
+|-|-|:-:|
+|Acoustic|PER/CER|21.0/9.1|
+|Decoder|CER|7.0|
+|Language|BLEU|41.7|
 
-### Speed
+Upon completion, it was found that the pipeline did not fair well on uncleaned, raw audio data despite doing exceptionally well on both training and validation sets. This might be due to the fact that the models were trained on clean, low noise data.
+Additionally, the pretrained language model was trained on OPUS-100 dataset which had mainly bibilical context, thus causing the outputs to not sound natural.
 
-### Model Size
-![AcousticModel]()
+For future improvements, a conversational dataset will be required to train the language model. As such, to achieve this, a transcription pipeline was built using the first two models, the acoustic and decoder models, to transcribe Japanese subbed anime with its pairing subtitles. On average, 250 audio transcribed samples of 5 seconds length can be extracted per episode.
 
-![DecoderModel]()
+# 2. User Guide (Windows only)
 
-![LangaugeModel]()
+1. Ensure [CUDAToolkit](https://developer.nvidia.com/cuda-downloads) is installed and NVIDIA Drivers are updated. 
 
-# 2. Setup (Windows only)
-PyQT5 and VLC MediaPlayer were utilized to build the user interface.
+2. Download HoloMora Package from [link](https://drive.google.com/file/d/1el3it3WQWiOw8IlZpBV_FBFPncCTdBfw/view?usp=sharing) and unzip.
 
-1. Install VLC Mediaplayer from https://www.videolan.org/
+3. Run HoloMora.exe.
 
-2. Download HoloMora Installer
+4. Input a valid file directory and ensure that the videos are in .mkv format.
 
-3. Run HoloMora.exe
+```
+dir_path structure can be assumed as follows:
 
-![Icon](figures\icon_snip.png)
+dir_path
+│
+└───Series 1
+│   │   Season1
+│   └─  Season2
+|           |   Ep1.mkv
+│           └─  Ep2.mkv
+│
+└───Series 2
+│   │   Ep1.mkv
+│   └─  Ep2.mkv
+│
+└───Series 3
+│   │   Ep1.mkv
+│   └─  Ep2.mkv
+```
 
-4. Input a valid YouTube link
+![Run](Figures\demo_1.png)
 
-![Run](figures\run_exe.png)
+5. Program will execute. Folders './temp' and './wav_files' will generate.
 
-5. Subtitles will appear at the bottom of the screen automatically
+![Run](Figures\demo_2.png)
 
-6. Press ESC and close command prompt to exit program
+6. Transcripts will be deposited in './temp/data.txt' while corresponding wav_files are put in './wav_files'.
+
+![Run](Figures\demo_3.png)
+
+7. Program will close automatically upon completion.
 
 # 3. References
 ### Papers
@@ -64,6 +90,7 @@ PyQT5 and VLC MediaPlayer were utilized to build the user interface.
 - [Kokoro-Librivox](https://github.com/kaiidams/Kokoro-Speech-Dataset)
 - [OPUS-100](https://opus.nlpl.eu/opus-100.php)
 - [Tatoeba](https://opus.nlpl.eu/Tatoeba.php)
+- [CC-100](http://data.statmt.org/cc-100/)
 
 ### Misc.
 - [ARPABET table](https://nlp.stanford.edu/courses/lsa352/arpabet.html)
