@@ -4,7 +4,7 @@ In this project, we tested the feasibility of a mora-based, Japanese-to-English 
 Due to time-constraints, the language model was left in its pre-trained weights. 
 
 # 1. Approach
-![Diagram](figures\Diagram.png)
+![Diagram](Figures\Diagram.png)
 ## 1.1 Training Parameters
 Due to memory constraints, memory-efficient techniques had to be employed;
 - Models were trained seperately and not end-to-end.
