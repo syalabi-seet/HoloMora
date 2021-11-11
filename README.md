@@ -4,7 +4,7 @@ In this project, we tested the feasibility of a mora-based, Japanese-to-English 
 Due to time-constraints, the language model was left in its pre-trained weights. 
 
 # 1. Approach
-![Diagram](Figures\Diagram.png)
+![Diagram](Figures/Diagram.png)
 ## 1.1 Training Parameters
 Due to memory constraints, memory-efficient techniques had to be employed;
 - Models were trained seperately and not end-to-end.
@@ -12,7 +12,7 @@ Due to memory constraints, memory-efficient techniques had to be employed;
 - Data was collated by sequence length to minimize padding within batches.
 - Training loops were written in low-level Tensorflow to speed up computation and customizability.
 
-![Cosine decay with warm-up learning schedule](figures\schedule.PNG)
+![Cosine decay with warm-up learning schedule](figures/schedule.PNG)
 
 |Model|Pretrained weights|Batch size|Epochs|Warm-up epochs|Learning rate|Training samples|Test split|Metrics|Training time|
 |-|-|-|-|-|-|-|-|-|-|
@@ -21,8 +21,8 @@ Due to memory constraints, memory-efficient techniques had to be employed;
 |Language|[opus-mt-ja-en](https://huggingface.co/Helsinki-NLP/opus-mt-ja-en)|-|-|-|-|-|-|BLEU|-|
 
 ## 1.2 Performance
-![Acoustic](Figures\acoustic_model_plot.png)
-![Decoder](Figures\decoder_model_plot.png)
+![Acoustic](Figures/acoustic_model_plot.png)
+![Decoder](Figures/decoder_model_plot.png)
 |Model|Metrics|Validation score|
 |-|-|:-:|
 |Acoustic|PER/CER|21.0/9.1|
@@ -64,15 +64,15 @@ dir_path
 │   └─  Ep2.mkv
 ```
 
-![Run](Figures\demo_1.png)
+![Run](Figures/demo_1.png)
 
 5. Program will execute. Folders './temp' and './wav_files' will generate.
 
-![Run](Figures\demo_2.png)
+![Run](Figures/demo_2.png)
 
 6. Transcripts will be deposited in './temp/data.txt' while corresponding wav_files are put in './wav_files'.
 
-![Run](Figures\demo_3.png)
+![Run](Figures/demo_3.png)
 
 7. Program will close automatically upon completion.
 
